@@ -1,0 +1,13 @@
+.vscode
+.gitignore
+.dockerignore
+Dockerfile
+
+docs/
+
+Makefile
+package.json
+node_modules/
+
+*.md
+*.log
