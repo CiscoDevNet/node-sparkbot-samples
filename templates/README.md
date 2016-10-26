@@ -1,6 +1,6 @@
 # Templates for the node-sparkbot library
 
-A set of templates to quickly bootstrap a Cisco Spark bot
+A set of templates to quickly bootstrap a Cisco Spark bot:
 
 - [onEvent-all-all](onEvent-all-all.js), [onEvent-messages-created](onEvent-messages-created.js): examples of listeners to specific Webhook (Resources/Event) triggers. Leverages Sparkbot function: webhook.onEvent().
 
@@ -22,7 +22,7 @@ Each template can be launched from the command line.
 
 Note that the SPARK_TOKEN env variable is required to read message contents.
 
-Once your bot is started, read this [guide to expose it publically and create a Cisco Spark webhook to have it start receiving events](../docs/GuideToRunLocally.md).
+Once your bot is started, read this [guide to expose it to the world and create a Cisco Spark webhook to start receiving events](../docs/README.md).
 
 
 

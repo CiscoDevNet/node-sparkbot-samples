@@ -1,4 +1,4 @@
-# "How to" Guide: run your Cisco Spark Bot on Cloud 9
+# "How to" Guide: run your Cisco Spark bot on Cloud 9
 
 [Cloud9](https://c9.io/) is a Cloud IDE from which you can edit nodejs source code, but also run and debug your bots.
 

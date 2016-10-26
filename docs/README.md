@@ -1,12 +1,12 @@
-# How to Guide: run your Cisco Spark Bot locally
+# How to Guide: run your Cisco Spark Bot 
 
-This guide details how to have your local bot (ie, running on a dev machine or a private network), talk to the Spark Cloud platform.
-
+This guide details how to run your bot locally  (ie, running on a dev machine or a private network), and make it talk with the Cisco Spark Cloud platform.
 1. Start you bot
 2. Check your bot is healthy 
 3. Expose your bot 
 4. Create a Spark Webhook 
 
+Looking for a Cloud development environment, check the guide [code and debug on Cloud9](GuideToRunOnCloud9.md).
 
 ## Start you bot
 
@@ -22,10 +22,11 @@ Here are the steps to install this project samples and run them
 # Clone repo
 > git clone https://github.com/CiscoDevNet/node-sparkbot-samples
 # Install dependencies 
-> cd sparkbot-webhook-samples
+> cd node-sparkbot-samples
 > npm install
 # Run an example
-> DEBUG=sparkbot*,samples* node tests/express-all-in-one.js
+# add SPARK_TOKEN=XXXXXX to inject a Cisco Spark API access token
+> DEBUG=sparkbot*,samples* node templates/onEvent-all-all.js
 ...
 Cisco Spark Bot started at http://localhost:8080/
    GET  / for Health checks
@@ -71,8 +72,9 @@ your url is: http://<yourbot>.localtunnel.me
 # In another terminal, check your bot is accessible
 > curl https://<yourbot>.localtunnel.me/
 {
-  "message": "Congrats, your Cisco Spark webhook is up and running",
+  "message": "Congrats, your Cisco Spark Bot is up and running",
   "since": "2016-09-01T13:15:39.425Z",
+  "tip": "Register your bot as a WebHook to start receiving events: https://developer.ciscospark.com/endpoint-webhooks-post.html",
   "listeners": [
     "messages/created"
   ],
@@ -96,8 +98,7 @@ your url is: http://<yourbot>.localtunnel.me
   },
   "commands": [
     "help"
-  ],
-  "tip": "Register your bot as a WebHook to start receiving events: https://developer.ciscospark.com/endpoint-webhooks-post.html"
+  ]
 }
 ```
 
