@@ -13,23 +13,22 @@
 var debug = require("debug")("samples");
 var fine = require("debug")("samples:fine");
 
-// Starts your Bot with default configuration. The SPARK API access token is read from the SPARK_TOKEN env variable 
+// Starts a Spark Bot with default configuration, access token read from the SPARK_TOKEN env variable 
 var SparkBot = require("node-sparkbot");
 var bot = new SparkBot();
 
+// nodejs client to write back to Cisco Spark
 var SparkClient = require("node-sparky");
 var spark = new SparkClient({ token: process.env.SPARK_TOKEN });
 
+// event API wrapper that preformats markdown messages to send back to Cisco Spark
 var Events = require("./events.js");
 
 
-bot.onCommand("about", function (command) {
-    spark.messageSendRoom(command.message.roomId, {
-        markdown: "```\n{\n   'author':'Brought to you by Cisco DevNet',\n   'code':'https://github.com/ObjectIsAdvantag/sparkbot-webhook-samples/blob/master/examples/devnet/bot.js',\n   'description':'shows upcoming DevNet events',\n   'healthcheck':'GET https://devnet-events-sparkbot.herokuapp.com/',\n   'webhook':'POST https://devnet-events-sparkbot.herokuapp.com/'\n}\n```"
-    });
+
+bot.onCommand("help", function (command) {
+    showHelp(command.message.roomId);
 });
-
-
 bot.onCommand("fallback", function (command) {
     // so happy to join
     spark.messageSendRoom(command.message.roomId, {
@@ -40,14 +39,13 @@ bot.onCommand("fallback", function (command) {
             showHelp(command.message.roomId);
         });
 });
-bot.onCommand("help", function (command) {
-    showHelp(command.message.roomId);
-});
 function showHelp(roomId) {
     spark.messageSendRoom(roomId, {
-        markdown: "I can tell about DevNet events\n- /about\n- /help\n- /next [#max]: show upcoming #max events, defaults to 5\n- /now: show events happening now\n"
+        markdown: "I can tell about DevNet events\n- /about\n- /help\n- /next [#max]: upcoming events, defaults to /next 5\n- /now: events happening now\n"
     });
 }
+
+
 
 
 bot.onCommand("next", function (command) {

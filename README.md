@@ -100,7 +100,7 @@ Features illustrated by this example:
 - Help command to display available commands
 - Fallback message if a command is not recognized
 - **Markdown formatting with mention**
-- Uses "node-sparkbot" library to wrap calls to the Cisco Spark REST API
+- Leverages the "node-sparkclient" library to wrap calls to the Cisco Spark REST API
 
 This bot can be run as is with either a Developer or a Bot access token 
 
