@@ -19,8 +19,8 @@ var SparkBot = require("node-sparkbot");
 var bot = new SparkBot();
 
 // do not listen to ourselves
-// comment if you're running the bot from your Developer access token and you want to invoke in a 1-1 room
-//bot.interpreter.ignoreSelf = true; 
+// uncomment if you're running the bot from your Developer access token and you want to invoke in a 1-1 room
+//bot.interpreter.ignoreSelf = false; 
 
 var SparkClient = require("node-sparky");
 var spark = new SparkClient({ token: process.env.SPARK_TOKEN });

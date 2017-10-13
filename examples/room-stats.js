@@ -27,7 +27,8 @@ var spark = new SparkClient({ token: process.env.SPARK_TOKEN });
 
 
 bot.onCommand("about", function (command) {
-    spark.messageSendRoom(command.message.roomId, {
+    spark.messageAdd({
+        roomId: command.message.roomId,
         markdown: "```\n{\n   'author':'Stève Sfartz <stsfartz@cisco.com>',\n   'code':'https://github.com/ObjectIsAdvantag/sparkbot-webhook-samples/blob/master/examples/room-stats.js',\n   'description':'computes the top contributors in a spark room',\n   'healthcheck':'GET https://sparkbot-room-stats.herokuapp.com',\n   'webhook':'POST https://sparkbot-room-stats.herokuapp.com'\n}\n```"
     });
 });
@@ -35,7 +36,8 @@ bot.onCommand("about", function (command) {
 
 bot.onCommand("fallback", function (command) {
     // so happy to join
-    spark.messageSendRoom(command.message.roomId, {
+    spark.messageAdd({
+        roomId: command.message.roomId,
         text: "sorry, I did not understand"
     })
         .then(function (message) {
@@ -47,7 +49,8 @@ bot.onCommand("help", function (command) {
     showHelp(command.message.roomId);
 });
 function showHelp(roomId) {
-    spark.messageSendRoom(roomId, {
+    spark.messageAdd({
+        roomId: roomId,
         markdown: "I am all about Stats for your Spark rooms\n- "
         + "\\" + bot.interpreter.prefix + "about\n- "
         + "\\" + bot.interpreter.prefix + "help\n- "
@@ -65,14 +68,15 @@ bot.onCommand("stats", function (command) {
     }
 
     // As computing stats takes time, let's acknowledge we received the order
-    spark.messageSendRoom(command.message.roomId, {
+    spark.messageAdd({
+        roomId: command.message.roomId,
         markdown: "_heard you ! now computing stats from past " + max + " messages..._"
     });
 
     // Build a map of participations by participant email
     var participants = {};
     var totalMessages = 0; // used to get %ages of participation
-    spark.messagesGet(command.message.roomId, max)
+    spark.messagesGet({roomId: command.message.roomId}, max)
         .then(function (messages) {
             // Process messages 
             messages.forEach(function (message) {
@@ -103,12 +107,14 @@ bot.onCommand("stats", function (command) {
             var limit = Math.min(length, 10);
             switch (limit) {
                 case 0:
-                    spark.messageSendRoom(command.message.roomId, {
+                    spark.messageAdd({
+                        roomId: command.message.roomId,
                         text: "did not find any participant! is the room active?"
                     });
                     break;
                 case 1:
-                    spark.messageSendRoom(command.message.roomId, {
+                    spark.messageAdd({
+                        roomId: command.message.roomId,
                         markdown: "**kudos to <@personEmail:" + top[0] + ">" + ", the only 1 active participant in here !**"
                     });
                     break;
@@ -124,7 +130,8 @@ bot.onCommand("stats", function (command) {
                             stats += "\n\n" + (i + 1) + ". <@personEmail:" + email + ">, " + pourcentage + "% (" + number + ")";
                         }
                     }
-                    spark.messageSendRoom(command.message.roomId, {
+                    spark.messageAdd({
+                        roomId: command.message.roomId,
                         markdown: stats
                     });
                     break;
@@ -140,7 +147,8 @@ bot.onEvent("memberships", "created", function (trigger) {
         debug("bot's just added to room: " + trigger.data.roomId);
 
         // so happy to join
-        spark.messageSendRoom(trigger.data.roomId, {
+        spark.messageAdd({
+            roomId: trigger.data.roomId,
             text: "Hi, I am so happy to join !"
         })
             .then(function (message) {
