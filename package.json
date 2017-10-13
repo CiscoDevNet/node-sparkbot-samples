@@ -20,12 +20,12 @@
   "author": "Stève Sfartz (Cisco DevNet)",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.15.0",
-    "debug": "^2.2.0",
-    "express": "^4.13.4",
-    "node-sparkbot": "^0.9.2",
-    "node-sparkclient": "^0.1.0",
-    "node-sparky": "^3.1.17",
-    "request": "^2.74.0"
+    "body-parser": "^1.18.2",
+    "debug": "^3.1.0",
+    "express": "^4.16.2",
+    "node-sparkbot": "^0.11.0",
+    "node-sparkclient": "^0.1.4",
+    "node-sparky": "^4.0.10",
+    "request": "^2.83.0"
   }
 }
