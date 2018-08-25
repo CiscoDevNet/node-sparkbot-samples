@@ -21,6 +21,9 @@ var bot = new ChatBot();
 // uncomment if you're running the bot from your developer access token and you want to invoke in a 1-1 room
 //bot.interpreter.ignoreSelf = false; 
 
+// removing the bot default triggering filter
+bot.interpreter.prefix = ""; // not more "/" prepend to commands
+
 var SparkClient = require("node-sparky");
 var client = new SparkClient({ token: process.env.ACCESS_TOKEN || process.env.SPARK_TOKEN });
 
@@ -50,12 +53,12 @@ bot.onCommand("help", function (command) {
 function showHelp(roomId) {
     client.messageSend({
         roomId: roomId,
-        markdown: "I can give you quick access to Webex Teams technical data:\n- /about\n- /help\n- /room: reveals this room identifier\n- /whoami: shows your account info\n- /whois @mention: learn about other participants\n"
+        markdown: "I can give you quick access to Webex Teams technical data. Simply type:\n- **about**\n- **help**\n- **roomId**: reveals this room identifier\n- **whoami**: shows your account info\n- **whois @mention**: inquire about other participants"
     });
 }
 
 
-bot.onCommand("room", function (command) {
+bot.onCommand("roomId", function (command) {
     client.messageSend({
         roomId: command.message.roomId,
         markdown: "roomId: " + command.message.roomId
@@ -73,7 +76,7 @@ bot.onCommand("whoami", function (command) {
 
 bot.onCommand("whois", function (command) {
     // Check usage
-    if (command.message.mentionedPeople.length != 2) {
+    if ((!command.message.mentionedPeople) || (command.message.mentionedPeople.length != 2)) {
         client.messageSend({
             roomId: command.message.roomId,
             markdown: "sorry, I cannot proceed if you do not mention a room participant"
