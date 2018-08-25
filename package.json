@@ -1,10 +1,10 @@
 {
   "name": "node-sparbot-samples",
-  "version": "v1.2.0",
-  "description": "Examples of Cisco Spark Bots in nodejs",
+  "version": "v2.0.0",
+  "description": "Examples of Webex Teams bots in Node.js",
   "keywords": [
     "SparkBot",
-    "CiscoSpark",
+    "Webex Teams",
     "Webhook",
     "NodeJS",
     "Express"
@@ -20,12 +20,12 @@
   "author": "Stève Sfartz (Cisco DevNet)",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.18.2",
+    "body-parser": "^1.18.3",
     "debug": "^3.1.0",
-    "express": "^4.16.2",
-    "node-sparkbot": "^0.12.0",
+    "express": "^4.16.3",
+    "node-sparkbot": "^1.0.0",
     "node-sparkclient": "^0.1.4",
-    "node-sparky": "^4.0.10",
-    "request": "^2.83.0"
+    "node-sparky": "^4.6.0",
+    "request": "^2.88.0"
   }
 }
