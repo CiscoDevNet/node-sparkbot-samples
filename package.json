@@ -10,7 +10,7 @@
     "Express"
   ],
   "scripts": {
-    "start": "node $SCRIPT"
+    "start": "node examples/inspector.js"
   },
   "homepage": "https://github.com/CiscoDevNet/node-sparkbot-samples#readme",
   "repository": {
