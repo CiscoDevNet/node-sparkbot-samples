@@ -1,12 +1,11 @@
-# How to Guide: run your Cisco Spark Bot 
+# How to Guide: run your Webex Teams Bot 
 
-This guide details how to run your bot locally  (ie, running on a dev machine or a private network), and make it talk with the Cisco Spark Cloud platform.
+This guide details how to run your bot locally  (ie, running on a dev machine or a private network), and make it talk with the Webex cloud platform.
 1. Start you bot
 2. Check your bot is healthy 
 3. Expose your bot 
-4. Create a Spark Webhook 
+4. Create a webhook 
 
-Looking for a Cloud development environment, check the guide [code and debug on Cloud9](GuideToRunOnCloud9.md).
 
 ## Start you bot
 
@@ -25,12 +24,12 @@ Here are the steps to install this project samples and run them
 > cd node-sparkbot-samples
 > npm install
 # Run an example
-# add SPARK_TOKEN=XXXXXX to inject a Cisco Spark API access token
-> DEBUG=sparkbot*,samples* node templates/onEvent-all-all.js
+# add an ACCESS_TOKEN environment variable to configure your bot with the Webex Teams API access token of your bot account
+> DEBUG=sparkbot*,samples*  ACCESS_TOKEN=123456789  node templates/onEvent-all-all.js
 ...
-Cisco Spark Bot started at http://localhost:8080/
-   GET  / for Health checks
-   POST / receives Spark Webhook events
+bot started at http://localhost:8080/
+   GET  / for health checks
+   POST / receives Webhook events
 ```
 
 ## Check your bot is healthy
@@ -43,7 +42,7 @@ You should get back an JSON payload with your bot properties.
 > curl http://localhost:8080
 ...
 {
-  "message": "Congrats, your Cisco Spark webhook is up and running",
+  "message": "Congrats, your webhook is up and running",
   "since": "2016-09-01T13:15:39.425Z",
   "listeners": [
     ...
@@ -72,9 +71,9 @@ your url is: http://<yourbot>.localtunnel.me
 # In another terminal, check your bot is accessible
 > curl https://<yourbot>.localtunnel.me/
 {
-  "message": "Congrats, your Cisco Spark Bot is up and running",
+  "message": "Congrats, your bot is up and running",
   "since": "2016-09-01T13:15:39.425Z",
-  "tip": "Register your bot as a WebHook to start receiving events: https://developer.ciscospark.com/endpoint-webhooks-post.html",
+  "tip": "Register your bot as a WebHook to start receiving events: https://developer.webex.com/endpoint-webhooks-post.html",
   "listeners": [
     "messages/created"
   ],
@@ -103,18 +102,18 @@ your url is: http://<yourbot>.localtunnel.me
 ```
 
 
-## Register your bot as a Spark WebHook
+## Register a webhook for your bot
 
-Last step, is to create a Spark Webhook for your bot.
+Last step, is to create a Webhook for your bot to start receiving events for Webex Teams.
 
-This can be done via the Cisco Spark Developer Portal / [Create a WebHook](https://developer.ciscospark.com/endpoint-webhooks-post.html) interactive documentation,
+This can be done via the Webex Developer Portal / [Create a WebHook](https://developer.webex.com/endpoint-webhooks-post.html) interactive documentation,
 but also via Postman or a CURL command as will see right after.
 
 ### via the interactive documentation
 
 For the scope of this example, we'll associate our bot to all resources and events.
 
-Note: even if our webhook can process all events, you can register a webhook with a more limited set of events. Then Spark will then invoke your webhook only if those events happen (whatever your bot can process).
+Note: even if our webhook can process all events, you can register a webhook with a more limited set of events. Then Webex will then invoke your webhook only if those events happen (whatever your bot can process).
 
 ![](img/spark4devs-create-webhook-all-all.png)
 
@@ -125,7 +124,7 @@ As an alternative, you can run this CURL command.
 
 ``` bash
 > curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer YOUR_SPARK_TOKEN" -d '{
-        "name": "Sparkbot Samples",
+        "name": "Bot Samples",
         "resource": "all",
         "event": "all",
         "targetUrl": "https://yourbot.localtunnel.me/"

@@ -1,33 +1,33 @@
-# Cisco Spark Bot examples in nodejs
+# Webex Teams Chatbot examples in Node.js
 
-Interested in creating your own Cisco Spark bots ? 
-
+Interested in creating your own Webex Teams Chatbots ? 
 Go through the examples below.
 
-If you feel inspired, follow the guides to run your own version of these bots: [Guide to run on Cloud9](docs/GuideToRunLocally.md) and [Guide to run locally](docs/GuideToRunOnCloud9.md).  
+If you feel inspired, run your own version of these bots. 
+Simply take the step-by-step tutorials at DevNet: [Run a Webex Teams bot locally](https://learninglabs.cisco.com/tracks/collab-cloud/spark-apps/collab-spark-botl-ngrok/step/1).
 
-Or pick a [template](templates/) that suits your scenario, and customize it.
+Then, pick a [template](templates/) that suits your scenario, and customize it.
 
-Note that these bot samples code leverage the [node-sparkbot](https://github.com/CiscoDevNet/node-sparkbot) Bot framework.
+Note that these bot samples leverage the [node-sparkbot](https://github.com/CiscoDevNet/node-sparkbot) Chatbot framework.
 
-__and if you're new to Cisco Spark Apps, note that DevNet provides 10 to 20' [Learning labs](https://learninglabs.cisco.com/labs).__
+__Also, if you're new to Webex Teams API, note that DevNet provides a full learning track: [Learning track](https://learninglabs.cisco.com/tracks/collab-cloud).__
 
 
 
 ## [inspect](examples/inspector.js)
 
-Provides instant access to Cisco Spark technical data.
+Provides instant access to Webex Teams technical data (such as the space id, or the email of a space participant).
 
 Features illustrated by this example:
 - **Help command to display available commands**
 - **About command to get meta info about the bot**
 - **Welcome message as the bot is added in a room**
 - **Fallback message if a command is not recognized**
-- Uses "node-sparky" library to wrap calls to the Cisco Spark REST API
+- Uses the "node-sparky" library to requests the Webex Teams API
 
 This bot can be run as is with either a Developer or a Bot access token 
 
-Invite _inspect@sparkbot.io_ to meet the bot.
+Invite _inspect@webex.bot_ to meet the bot.
 
 ![](docs/img/bot-inspect-welcome.png)
 

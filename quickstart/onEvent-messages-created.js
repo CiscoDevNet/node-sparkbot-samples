@@ -5,13 +5,13 @@
 
 
 /* 
- * a Cisco Spark Bot that listens to specific Webhooks events, leverages node-sparkbot webhook.onEvent() function.
- * note : this example requires that you've set a SPARK_TOKEN env variable to read messages contents.
+ * a Webex Teams Bot that listens to specific Webhooks events, leverages node-sparkbot webhook.onEvent() function.
+ * note : this example requires that you've set an ACCESS_TOKEN env variable to read messages contents.
  */
 
 var SparkBot = require("node-sparkbot");
 
-// Starts your Webhook with default configuration where the SPARK API access token is read from the SPARK_TOKEN env variable 
+// Starts your Webhook with default configuration where the Webex Teams API access token is read from the ACCESS_TOKEN env variable 
 var bot = new SparkBot();
 
 bot.onEvent('messages', 'created', function(trigger) {

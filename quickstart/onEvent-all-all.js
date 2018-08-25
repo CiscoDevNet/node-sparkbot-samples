@@ -5,7 +5,7 @@
 
 
 /* 
- * a Cisco Spark Bot that listens to specific Webhooks events, leverages node-sparkbot webhook.onEvent() function.
+ * a Webex Teams Bot that listens to specific Webhooks events, leverages node-sparkbot webhook.onEvent() function.
  */
 
 var SparkBot = require("node-sparkbot");
