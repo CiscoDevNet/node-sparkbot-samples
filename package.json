@@ -10,7 +10,7 @@
     "Express"
   ],
   "scripts": {
-    "start": "node examples/devnet/events.js"
+    "start": "node examples/devnet/bot.js"
   },
   "homepage": "https://github.com/CiscoDevNet/node-sparkbot-samples#readme",
   "repository": {
