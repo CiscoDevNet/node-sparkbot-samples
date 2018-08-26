@@ -53,7 +53,7 @@ Invite _roomid@webex.io_ to meet the bot.
 
 ## [room-stats](examples/room-stats.js)
 
-Computes stats for the room it is invoked from. 
+Computes stats for the space it is invoked from. 
 
 Features illustrated by this example:
 - Help message to display bot commands
@@ -61,9 +61,9 @@ Features illustrated by this example:
 - **Custom command prefix #**
 - **Markdown formatting with lists & mentions**
 - **Runs with a Developer account**
-- Uses "node-sparky" library to wrap calls to the Cisco Spark REST API
+- Uses "node-sparky" library to invoke the Webex Teams API
 
-Note that this webhook must be run with a Developer access token (either your's or a fake Spark account), because we must fetch all messages from rooms, not only those where bot is mentionned.
+Note that this webhook must be run with a personal access token (from a fake Webex Teams account), because the bot must be able to fetch all messages from spaces, not only those for which bot is mentionned.
 
 Invite _stats@chatbot.land_ to meet the bot.
 

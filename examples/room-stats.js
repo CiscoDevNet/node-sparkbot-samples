@@ -4,39 +4,39 @@
 //
 
 /* 
- * a Cisco Spark bot that computes stats for a room
+ * a Webex Teams bot that computes stats for a space
  * 
- * note : this example requires you set up a SPARK_TOKEN env variable for a real account (not a bot account), 
- *     as this code reads past messages in the room 
+ * note : this example requires you set up an ACCESS_TOKEN env variable for a human account (NOT a bot account), 
+ *     as this code reads past, and all messages in the space
  *  
  */
 
 var debug = require("debug")("samples");
 var fine = require("debug")("samples:fine");
 
-// Starts your Bot with default configuration. The SPARK API access token is read from the SPARK_TOKEN env variable 
+// Starts your Bot with default configuration. The Webex Teams API access token is read from the ACCESS_TOKEN env variable 
 var SparkBot = require("node-sparkbot");
 var bot = new SparkBot();
 
 // Change command prefix to #
+// As this bot uses a 'HUMAN' account, it is necessary to have him invoked only if the prefix is used
 bot.interpreter.prefix = "#";
 
 var SparkClient = require("node-sparky");
-var spark = new SparkClient({ token: process.env.SPARK_TOKEN });
-
+var sparky = new SparkClient({ token: process.env.ACCESS_TOKEN });
 
 
 bot.onCommand("about", function (command) {
-    spark.messageAdd({
+    sparky.messageSend({
         roomId: command.message.roomId,
-        markdown: "```\n{\n   'author':'Stève Sfartz <stsfartz@cisco.com>',\n   'code':'https://github.com/ObjectIsAdvantag/sparkbot-webhook-samples/blob/master/examples/room-stats.js',\n   'description':'computes the top contributors in a spark room',\n   'healthcheck':'GET https://sparkbot-room-stats.herokuapp.com',\n   'webhook':'POST https://sparkbot-room-stats.herokuapp.com'\n}\n```"
+        markdown: "```\n{\n   'author':'Stève Sfartz <stsfartz@cisco.com>',\n   'code':'https://github.com/CiscoDevNet/node-sparkbot-samples/blob/master/examples/room-stats.js',\n   'description':'computes the top contributors for a space',\n   'healthcheck':'GET https://sparkbot-room-stats.herokuapp.com',\n   'webhook':'POST https://sparkbot-room-stats.herokuapp.com'\n}\n```"
     });
 });
 
 
 bot.onCommand("fallback", function (command) {
     // so happy to join
-    spark.messageAdd({
+    sparky.messageSend({
         roomId: command.message.roomId,
         text: "sorry, I did not understand"
     })
@@ -49,12 +49,12 @@ bot.onCommand("help", function (command) {
     showHelp(command.message.roomId);
 });
 function showHelp(roomId) {
-    spark.messageAdd({
+    sparky.messageSend({
         roomId: roomId,
-        markdown: "I am all about Stats for your Spark rooms\n- "
+        markdown: "I am all about Stats for your spaces\n- "
         + "\\" + bot.interpreter.prefix + "about\n- "
         + "\\" + bot.interpreter.prefix + "help\n- "
-        + "\\" + bot.interpreter.prefix + "stats [#messages] : computes stats from past messages, defaults to 100"
+        + "\\" + bot.interpreter.prefix + "stats [nb_messages] : computes stats from past messages, defaults to 100"
     });
 }
 
@@ -68,7 +68,7 @@ bot.onCommand("stats", function (command) {
     }
 
     // As computing stats takes time, let's acknowledge we received the order
-    spark.messageAdd({
+    sparky.messageSend({
         roomId: command.message.roomId,
         markdown: "_heard you ! now computing stats from past " + max + " messages..._"
     });
@@ -76,7 +76,7 @@ bot.onCommand("stats", function (command) {
     // Build a map of participations by participant email
     var participants = {};
     var totalMessages = 0; // used to get %ages of participation
-    spark.messagesGet({roomId: command.message.roomId}, max)
+    sparky.messagesGet({roomId: command.message.roomId}, max)
         .then(function (messages) {
             // Process messages 
             messages.forEach(function (message) {
@@ -107,15 +107,15 @@ bot.onCommand("stats", function (command) {
             var limit = Math.min(length, 10);
             switch (limit) {
                 case 0:
-                    spark.messageAdd({
+                    sparky.messageSend({
                         roomId: command.message.roomId,
-                        text: "did not find any participant! is the room active?"
+                        text: "did not find any participant! is the space active?"
                     });
                     break;
                 case 1:
-                    spark.messageAdd({
+                    sparky.messageSend({
                         roomId: command.message.roomId,
-                        markdown: "**kudos to <@personEmail:" + top[0] + ">" + ", the only 1 active participant in here !**"
+                        markdown: "**kudos to <@personEmail:" + top[0] + ">" + ", the only active participant in here!**"
                     });
                     break;
                 default:
@@ -130,7 +130,7 @@ bot.onCommand("stats", function (command) {
                             stats += "\n\n" + (i + 1) + ". <@personEmail:" + email + ">, " + pourcentage + "% (" + number + ")";
                         }
                     }
-                    spark.messageAdd({
+                    sparky.messageSend({
                         roomId: command.message.roomId,
                         markdown: stats
                     });
@@ -142,12 +142,12 @@ bot.onCommand("stats", function (command) {
 
 
 bot.onEvent("memberships", "created", function (trigger) {
-    var newMembership = trigger.data; // see specs here: https://developer.ciscospark.com/endpoint-memberships-get.html
+    var newMembership = trigger.data; // see specs here: https://developer.webex.com/endpoint-memberships-get.html
     if (newMembership.personId == bot.interpreter.person.id) {
         debug("bot's just added to room: " + trigger.data.roomId);
 
         // so happy to join
-        spark.messageAdd({
+        sparky.messageSend({
             roomId: trigger.data.roomId,
             text: "Hi, I am so happy to join !"
         })
