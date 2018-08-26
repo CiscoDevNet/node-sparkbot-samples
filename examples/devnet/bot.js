@@ -35,7 +35,7 @@ bot.onCommand("fallback", function (command) {
     // so happy to join
     sparky.messageSend({
         roomId: command.message.roomId,
-        markdown: "**sorry, I did not understand. Try help!**"
+        markdown: "**sorry, I did not understand.**"
     })
         .then(function (message) {
             // show how to use
