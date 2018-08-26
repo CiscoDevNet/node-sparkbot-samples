@@ -14,7 +14,7 @@
 var debug = require("debug")("samples");
 var fine = require("debug")("samples:fine");
 
-// Starts your Bot with default configuration. The SPARK API access token is read from the SPARK_TOKEN env variable 
+// Starts your Bot with default configuration. The Webex Teams API access token is read from the ACCESS_TOKEN env variable 
 var SparkBot = require("node-sparkbot");
 var bot = new SparkBot();
 
@@ -23,19 +23,21 @@ var bot = new SparkBot();
 //bot.interpreter.ignoreSelf = false; 
 
 var SparkClient = require("node-sparky");
-var spark = new SparkClient({ token: process.env.SPARK_TOKEN });
+var sparky = new SparkClient({ token: process.env.ACCESS_TOKEN });
 
 
 bot.onCommand("about", function (command) {
-    spark.messageSendRoom(command.message.roomId, {
-        markdown: "```\n{\n   'author':'Stève Sfartz <stsfartz@cisco.com>',\n   'code':'https://github.com/ObjectIsAdvantag/sparkbot-webhook-samples/blob/master/examples/roomid-phantom.js',\n   'description':'a handy tool to retreive Spark Rooms identifiers',\n   'healthcheck':'GET https://sparkbot-roomid.herokuapp.com',\n   'webhook':'POST https://sparkbot-roomid.herokuapp.com'\n}\n```"
+    sparky.messageSend({
+        roomId: command.message.roomId, 
+        markdown: "```\n{\n   'author':'Stève Sfartz <stsfartz@cisco.com>',\n   'code':'https://github.com/CiscoDevNet/node-sparkbot-samples/blob/master/examples/roomid-phantom.js',\n   'description':'a handy tool to retreive Webex Teams space identifiers',\n   'healthcheck':'GET https://sparkbot-roomid.herokuapp.com',\n   'webhook':'POST https://sparkbot-roomid.herokuapp.com'\n}\n```"
     });
 });
 
 
 bot.onCommand("fallback", function (command) {
     // so happy to join
-    spark.messageSendRoom(command.message.roomId, {
+    sparky.messageSend({
+        roomdId: command.message.roomId, 
         text: "sorry, I did not understand"
     })
         .then(function (message) {
@@ -47,7 +49,8 @@ bot.onCommand("help", function (command) {
     showHelp(command.message.roomId);
 });
 function showHelp(roomId) {
-    spark.messageSendRoom(roomId, {
+    sparky.messageSend({
+        roomId: roomId,
         markdown: "I am an ephemeral bot !\n\nAdd me to a Room: I'll send you back the room id in a private message and leave the room right away.\n- /about\n- /help\n"
     });
 }
@@ -55,7 +58,7 @@ function showHelp(roomId) {
 
 
 bot.onEvent("memberships", "created", function (trigger) {
-    var newMembership = trigger.data; // see specs here: https://developer.ciscospark.com/endpoint-memberships-get.html
+    var newMembership = trigger.data; // see specs here: https://developer.webex.com/endpoint-memberships-get.html
     if (newMembership.personId == bot.interpreter.person.id) {
         debug("bot has just been added to room: " + trigger.data.roomId);
 
@@ -63,21 +66,23 @@ bot.onEvent("memberships", "created", function (trigger) {
         if (trigger.actorId != bot.interpreter.person.id) {
 
             // Retreive actorEmail
-            spark.personGet(trigger.actorId)
+            sparky.personGet(trigger.actorId)
                 .then(function (person) {
                     var email = person.emails[0];
                     debug("found inquirer: " + email);
 
                     // Send a direct message
-                    spark.messageSendPerson(email, {
+                    sparky.messageSend({
+                        toPersonEmail: email, 
                         markdown: "extracted room id: **" + newMembership.roomId + "**\n\nwill now leave the room you asked me to inquire on..."
                     })
                         .then(function (message) {
 
                             // Leave inquired room
-                            spark.membershipRemove(newMembership.id)
+                            sparky.membershipRemove(newMembership.id)
                                 .then(function () {
-                                    spark.messageSendPerson(email, {
+                                    sparky.messageSend({
+                                        toPersonEmail: email, 
                                         markdown: "job done, I have left the inquired room. Au revoir !"
                                     });
                                 })

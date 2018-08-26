@@ -10,7 +10,7 @@
     "Express"
   ],
   "scripts": {
-    "start": "node examples/inspector.js"
+    "start": "node examples/roomid-phantom.js"
   },
   "homepage": "https://github.com/CiscoDevNet/node-sparkbot-samples#readme",
   "repository": {

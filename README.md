@@ -35,17 +35,17 @@ Invite _inspect@webex.bot_ to meet the bot.
 
 ## [roomId](examples/roomid-phantom.js)
 
-Fetches the identifier of the room in which this bot has just been added, 
-pushes the roomId via a direct message, and leaves the inquired room right away.
+Fetches the identifier of the space in which this bot has just been added, 
+pushes the roomId via a direct message, and leaves the inquired space right away.
 
 Features illustrated by this example:
 - Help command to display available commands
 - About command to get meta info about the bot
 - Fallback message if a command is not recognized
 - **Send a direct message and leaves the room**
-- Uses "node-sparky" library to wrap calls to the Cisco Spark REST API
+- Uses "node-sparky" library to interact with Webex Teams
 
-Invite _roomid@sparkbot.io_ to meet the bot.
+Invite _roomid@webex.io_ to meet the bot.
 
 ![](docs/img/bot-roomId.png)
 
