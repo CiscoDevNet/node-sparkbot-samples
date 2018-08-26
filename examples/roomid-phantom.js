@@ -22,6 +22,9 @@ var bot = new SparkBot();
 // uncomment if you're running the bot from your Developer access token and you want to invoke in a 1-1 room
 //bot.interpreter.ignoreSelf = false; 
 
+// removing the bot default triggering filter
+bot.interpreter.prefix = ""; // not more "/" prepend to commands
+
 var SparkClient = require("node-sparky");
 var sparky = new SparkClient({ token: process.env.ACCESS_TOKEN });
 
@@ -38,7 +41,7 @@ bot.onCommand("fallback", function (command) {
     // so happy to join
     sparky.messageSend({
         roomdId: command.message.roomId, 
-        text: "sorry, I did not understand"
+        text: "sorry, I did not understand. Try help."
     })
         .then(function (message) {
             // show how to use
@@ -51,7 +54,7 @@ bot.onCommand("help", function (command) {
 function showHelp(roomId) {
     sparky.messageSend({
         roomId: roomId,
-        markdown: "I am an ephemeral bot !\n\nAdd me to a Room: I'll send you back the room id in a private message and leave the room right away.\n- /about\n- /help\n"
+        markdown: "Well, I am an ephemeral bot, serving developers. My primary mission is to fetch identifiers: add me to a space, and I'll send back - the room's identifier - in a private 1-1 message, then will silently leave the space I just got added to.\n\nAlso, be aware that my skills are limited:\n- about\n- help"
     });
 }
 
@@ -60,7 +63,7 @@ function showHelp(roomId) {
 bot.onEvent("memberships", "created", function (trigger) {
     var newMembership = trigger.data; // see specs here: https://developer.webex.com/endpoint-memberships-get.html
     if (newMembership.personId == bot.interpreter.person.id) {
-        debug("bot has just been added to room: " + trigger.data.roomId);
+        debug("bot has just been added to space: " + trigger.data.roomId);
 
         // only take action if it is not the bot who created the room, to send the message back
         if (trigger.actorId != bot.interpreter.person.id) {
@@ -74,7 +77,7 @@ bot.onEvent("memberships", "created", function (trigger) {
                     // Send a direct message
                     sparky.messageSend({
                         toPersonEmail: email, 
-                        markdown: "extracted room id: **" + newMembership.roomId + "**\n\nwill now leave the room you asked me to inquire on..."
+                        markdown: "Found roomId: **" + newMembership.roomId + "**\n\nWill now leave the space you asked me to inquire on..."
                     })
                         .then(function (message) {
 
@@ -83,7 +86,7 @@ bot.onEvent("memberships", "created", function (trigger) {
                                 .then(function () {
                                     sparky.messageSend({
                                         toPersonEmail: email, 
-                                        markdown: "job done, I have left the inquired room. Au revoir !"
+                                        markdown: "Job done: I have silently left the space... Let me know when you need other identifiers ;-)"
                                     });
                                 })
                         });
