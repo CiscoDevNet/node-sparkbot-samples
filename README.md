@@ -81,11 +81,10 @@ Features illustrated by this example:
 - Welcome message as the bot is added in a room
 - Fallback message if a command is not recognized
 - **Command with integer argument** 
-- **Invokes a public REST API: [devnet-events-api](https://devnet-events-api.herokuapp.com/api/v1/events?limit=100)**
-- **Markdown formatting with lists and hyperlinks**
-- Uses "node-sparky" library to wrap calls to the Cisco Spark REST API
+ - **Markdown formatting with lists and hyperlinks**
+- Uses "node-sparky" library to wrap calls to the Webex Teams REST API
 
-Invite _CiscoDevNet@sparkbot.io_ to meet the bot.
+Invite _CiscoDevNet@webex.bot_ to meet the bot.
 
 ![](docs/img/bot-ciscodevnet-next.png)
 
@@ -100,7 +99,7 @@ Features illustrated by this example:
 - Help command to display available commands
 - Fallback message if a command is not recognized
 - **Markdown formatting with mention**
-- Leverages the "node-sparkclient" library to wrap calls to the Cisco Spark REST API
+- Leverages the "node-sparkclient" library to wrap calls to the Webex Teams REST API
 
 This bot can be run as is with either a Developer or a Bot access token 
 

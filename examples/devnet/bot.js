@@ -13,15 +13,17 @@
 var debug = require("debug")("samples");
 var fine = require("debug")("samples:fine");
 
-// Starts a Spark Bot with default configuration, access token read from the SPARK_TOKEN env variable 
+// Starts a bot with default configuration, access token read from the ACCESS_TOKEN env variable 
 var SparkBot = require("node-sparkbot");
 var bot = new SparkBot();
+// removing the bot default triggering filter
+bot.interpreter.prefix = ""; // not more "/" prepend to commands
 
 // nodejs client to write back to Cisco Spark
 var SparkClient = require("node-sparky");
-var spark = new SparkClient({ token: process.env.SPARK_TOKEN });
+var sparky = new SparkClient({ token: process.env.ACCESS_TOKEN });
 
-// event API wrapper that preformats markdown messages to send back to Cisco Spark
+// event API wrapper that preformats markdown messages to send back to Webex Teams
 var Events = require("./events.js");
 
 
@@ -31,8 +33,9 @@ bot.onCommand("help", function (command) {
 });
 bot.onCommand("fallback", function (command) {
     // so happy to join
-    spark.messageSendRoom(command.message.roomId, {
-        text: "**sorry, I did not understand**"
+    sparky.messageSend({
+        roomId: command.message.roomId,
+        markdown: "**sorry, I did not understand. Try help!**"
     })
         .then(function (message) {
             // show how to use
@@ -40,18 +43,25 @@ bot.onCommand("fallback", function (command) {
         });
 });
 function showHelp(roomId) {
-    spark.messageSendRoom(roomId, {
-        markdown: "I can tell about DevNet events\n- /about\n- /help\n- /next [#max]: upcoming events, defaults to /next 5\n- /now: events happening now\n"
+    sparky.messageSend({
+        roomId: roomId,
+        markdown: "I can tell about upcoming events at DevNet. Try:\n- about\n- help\n- next [#max]: upcoming events, defaults to 5\n- now: events happening now\n"
     });
 }
 
 
-
+bot.onCommand("about", function (command) {
+    sparky.messageSend({
+        roomId: command.message.roomId, 
+        markdown: "```\n{\n   'author':'Stève Sfartz <stsfartz@cisco.com>',\n   'code':'https://github.com/CiscoDevNet/node-sparkbot-samples/blob/master/examples/devnet/bot.js',\n   'description':'inquire about upcoming events at DevNet',\n   'healthcheck':'GET https://devnet-events-sparkbot.herokuapp.com'\n}\n```"
+    });
+});
 
 bot.onCommand("next", function (command) {
 
     // let's acknowledge we received the order
-    spark.messageSendRoom(command.message.roomId, {
+    sparky.messageSend({
+        roomId: command.message.roomId,
         markdown: "_heard you! asking my crystal ball..._"
     });
 
@@ -61,13 +71,15 @@ bot.onCommand("next", function (command) {
 
     Events.fetchNext(limit, function (err, events) {
         if (err) {
-            spark.messageSendRoom(command.message.roomId, {
-                 markdown: "**sorry, ball seems broken :-(**"
+            sparky.messageSend( {
+                roomId: command.message.roomId,
+                markdown: "**sorry, ball seems broken :-(**"
             });
             return;
         }
 
-        spark.messageSendRoom(command.message.roomId, {
+        sparky.messageSend({
+            roomId: command.message.roomId, 
             markdown: events
         });  
     });
@@ -76,19 +88,22 @@ bot.onCommand("next", function (command) {
 
 bot.onCommand("now", function (command) {
     // let's acknowledge we received the order
-    spark.messageSendRoom(command.message.roomId, {
+    sparky.messageSend({
+        roomId: command.message.roomId, 
         markdown: "_heard you! let's check what's happening now..._"
     });
 
     Events.fetchCurrent(function (err, events) {
         if (err) {
-            spark.messageSendRoom(command.message.roomId, {
+            sparky.messageSend({
+                roomId: command.message.roomId, 
                  markdown: "**sorry, could not contact the organizers :-(**"
             });
             return;
         }
 
-        spark.messageSendRoom(command.message.roomId, {
+        sparky.messageSend({
+            roomId: command.message.roomId, 
             markdown: events
         });  
     });
@@ -96,17 +111,19 @@ bot.onCommand("now", function (command) {
 
 
 bot.onEvent("memberships", "created", function (trigger) {
-    var newMembership = trigger.data; // see specs here: https://developer.ciscospark.com/endpoint-memberships-get.html
+    var newMembership = trigger.data; // see specs here: https://developer.webex.com/endpoint-memberships-get.html
     if (newMembership.personId == bot.interpreter.person.id) {
         debug("bot's just added to room: " + trigger.data.roomId);
 
         // so happy to join
-        spark.messageSendRoom(trigger.data.roomId, {
+        sparky.messageSend({
+            roomId: trigger.data.roomId, 
             text: "Hi, I am the DevNet Bot !"
         })
             .then(function (message) {
                 if (message.roomType == "group") {
-                    spark.messageSendRoom(message.roomId, {
+                    sparky.messageSend({
+                        roomId: message.roomId, 
                         markdown: "**Note: this is a 'Group' room,  I will wake up only when mentionned, ex: @" + bot.interpreter.nickName + " " +  bot.interpreter.prefix + "help**"
                     })
                         .then(function (message) {
