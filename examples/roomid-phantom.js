@@ -40,7 +40,7 @@ bot.onCommand("about", function (command) {
 bot.onCommand("fallback", function (command) {
     // so happy to join
     sparky.messageSend({
-        roomdId: command.message.roomId, 
+        roomId: command.message.roomId, 
         text: "sorry, I did not understand. Try help."
     })
         .then(function (message) {
