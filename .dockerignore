@@ -1,4 +1,5 @@
 .vscode
+.git
 .gitignore
 .dockerignore
 Dockerfile
@@ -7,6 +8,7 @@ docs/
 
 Makefile
 #package.json
+package-lock.json
 node_modules/
 
 *.md
