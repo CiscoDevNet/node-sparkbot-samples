@@ -26,7 +26,8 @@ COPY . /home/node/sparkbot
 RUN chown -R node:node /home/node/sparkbot
 USER node
 ENV HOME /home/node
-ENV SCRIPT templates/onEvent-all-all.js
+#ENV SCRIPT templates/onEvent-all-all.js
+ENV SCRIPT quickstart/onEvent-all-all.js
 
 # Run default sample
 CMD /usr/local/bin/node $SCRIPT
