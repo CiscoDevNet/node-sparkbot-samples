@@ -8,7 +8,7 @@ MAINTAINER Stève Sfartz
 EXPOSE 8080
 
 # create 'not priviledged' user
-RUN useradd -c 'Node.js user' -m -d /home/node -s /bin/bash node
+#RUN useradd -c 'Node.js user' -m -d /home/node -s /bin/bash node
 
 # isolate code distribution
 RUN mkdir -p /home/node/sparkbot
