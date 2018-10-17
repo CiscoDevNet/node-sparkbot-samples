@@ -26,7 +26,7 @@ ddev:
 	docker run -it -p 8080:8080 $(DOCKER_ACCOUNT)/node-sparkbot-samples
 
 drun: 
-	(lt -s sparkbot -l $(DOCKER_HOST_IPADDRESS) -p 8080 &)
+	#(lt -s sparkbot -l $(DOCKER_HOST_IPADDRESS) -p 8080 &)
 	docker run -it -p 8080:8080 $(DOCKER_ACCOUNT)/node-sparkbot-samples
     
 
