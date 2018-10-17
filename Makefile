@@ -5,6 +5,7 @@ DOCKER_ACCOUNT=objectisadvantag
 
 # Set this the your Host interface if you use DockerToolbox, otherwise leave it to 127.0.01
 DOCKER_HOST_IPADDRESS=192.168.99.100
+DOCKER_HOST_IPADDRESS=127.0.0.1
 
 
 default: dev
