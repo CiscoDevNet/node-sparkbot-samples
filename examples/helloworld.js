@@ -54,9 +54,9 @@ bot.onCommand("fallback", function (command) {
 //
 bot.onCommand("hello", function (command) {
     var email = command.message.personEmail; // User that created the message orginally 
-    client.createMessage(command.message.roomId, "Hello <@personEmail:" + email + ">", { "markdown":true }, function(err, message) {
+    client.createMessage(command.message.roomId, `Hello, your email is: **${email}**`, { "markdown":true }, function(err, message) {
         if (err) {
-            console.log("WARNING: could not post Hello message to room: " + command.message.roomId);
+            console.log("WARNING: could not post message to room: " + command.message.roomId);
             return;
         }
     });

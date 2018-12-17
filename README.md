@@ -98,7 +98,7 @@ Features illustrated by this example:
 - Welcome message as the bot is added in a room
 - Help command to display available commands
 - Fallback message if a command is not recognized
-- **Markdown formatting with mention**
+- Markdown formatting
 - Leverages the "node-sparkclient" library to wrap calls to the Webex Teams REST API
 
 This bot can be run as is with either a Developer or a Bot access token 
