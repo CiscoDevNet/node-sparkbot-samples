@@ -10,22 +10,22 @@
  *  
  */
 
-var debug = require("debug")("samples");
-var fine = require("debug")("samples:fine");
+const debug = require("debug")("samples");
+const fine = require("debug")("samples:fine");
 
 // Start your Bot with default configuration where the Webex Teams API access token is read from the ACCESS_TOKEN env variable 
-var ChatBot = require("node-sparkbot");
-var bot = new ChatBot();
+const WebexChatBot = require("node-sparkbot");
+const bot = new WebexChatBot();
 
-// do not listen to ourselves
-// uncomment if you're running the bot from your developer access token and you want to invoke in a 1-1 room
+// Do not listen to ourselves
+// Uncomment if you're running the bot a 'User' developer access token
 //bot.interpreter.ignoreSelf = false; 
 
-// removing the bot default triggering filter
-bot.interpreter.prefix = ""; // not more "/" prepend to commands
+// Overloading the bot default triggering '/' filter
+bot.interpreter.prefix = ""; // no prefix
 
-var SparkClient = require("node-sparky");
-var sparky = new SparkClient({ token: process.env.ACCESS_TOKEN || process.env.SPARK_TOKEN });
+const SparkClient = require("node-sparky");
+const sparky = new SparkClient({ token: process.env.ACCESS_TOKEN || process.env.SPARK_TOKEN });
 
 
 bot.onCommand("about", function (command) {
@@ -84,7 +84,7 @@ bot.onCommand("whois", function (command) {
         return;
     }
 
-    var participant = command.message.mentionedPeople[1];
+    let participant = command.message.mentionedPeople[1];
 
     sparky.personGet(participant).then(function (person) {
         sparky.messageSend({
@@ -96,7 +96,7 @@ bot.onCommand("whois", function (command) {
 
 
 bot.onEvent("memberships", "created", function (trigger) {
-    var newMembership = trigger.data; // see specs here: https://developer.ciscosparky.com/endpoint-memberships-get.html
+    let newMembership = trigger.data; // see specs here: https://developer.ciscosparky.com/endpoint-memberships-get.html
     if (newMembership.personId == bot.interpreter.person.id) {
         debug("bot's just added to room: " + trigger.data.roomId);
 

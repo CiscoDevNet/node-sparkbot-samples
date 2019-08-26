@@ -13,11 +13,13 @@
  * 
  */
 
-var SparkBot = require("node-sparkbot");
-var bot = new SparkBot();
-//bot.interpreter.prefix = "#"; // Remove comment to overlad default / prefix to identify bot commands
+const WebexChatBot = require("node-sparkbot");
+const bot = new WebexChatBot();
 
-var SparkAPIWrapper = require("node-sparkclient");
+// Remove comment to overload default '/' prefix to identify bot commands
+//bot.interpreter.prefix = "#"; 
+
+const SparkAPIWrapper = require("node-sparkclient");
 if (!process.env.ACCESS_TOKEN) {
     console.log("Could not start as this bot requires a Webex Teams API access token.");
     console.log("Please add env variable ACCESS_TOKEN on the command line");
@@ -25,7 +27,7 @@ if (!process.env.ACCESS_TOKEN) {
     console.log("> ACCESS_TOKEN=XXXXXXXXXXXX DEBUG=sparkbot* node helloworld.js");
     process.exit(1);
 }
-var client = new SparkAPIWrapper(process.env.ACCESS_TOKEN);
+const client = new SparkAPIWrapper(process.env.ACCESS_TOKEN);
 
 
 //
@@ -53,7 +55,7 @@ bot.onCommand("fallback", function (command) {
 // Bots commands here
 //
 bot.onCommand("hello", function (command) {
-    var email = command.message.personEmail; // User that created the message orginally 
+    let email = command.message.personEmail; // User that created the message orginally 
     client.createMessage(command.message.roomId, `Hello, your email is: **${email}**`, { "markdown":true }, function(err, message) {
         if (err) {
             console.log("WARNING: could not post message to room: " + command.message.roomId);
@@ -68,7 +70,7 @@ bot.onCommand("hello", function (command) {
 // sent as the bot is added to a Room
 //
 bot.onEvent("memberships", "created", function (trigger) {
-    var newMembership = trigger.data; // see specs here: https://developer.webex.com/endpoint-memberships-get.html
+    let newMembership = trigger.data; // see specs here: https://developer.webex.com/endpoint-memberships-get.html
     if (newMembership.personId != bot.interpreter.person.id) {
         // ignoring
         console.log("new membership fired, but it is not us being added to a room. Ignoring...");

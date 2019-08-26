@@ -11,22 +11,22 @@
  *  
  */
 
-var debug = require("debug")("samples");
-var fine = require("debug")("samples:fine");
+const debug = require("debug")("samples");
+const fine = require("debug")("samples:fine");
 
 // Starts your Bot with default configuration. The Webex Teams API access token is read from the ACCESS_TOKEN env variable 
-var SparkBot = require("node-sparkbot");
-var bot = new SparkBot();
+const WebexChatBot = require("node-sparkbot");
+const bot = new WebexChatBot();
 
 // do not listen to ourselves
 // uncomment if you're running the bot from your Developer access token and you want to invoke in a 1-1 room
 //bot.interpreter.ignoreSelf = false; 
 
-// removing the bot default triggering filter
-bot.interpreter.prefix = ""; // not more "/" prepend to commands
+// Removing the bot default triggering '/' filter
+bot.interpreter.prefix = "";
 
-var SparkClient = require("node-sparky");
-var sparky = new SparkClient({ token: process.env.ACCESS_TOKEN });
+const SparkClient = require("node-sparky");
+const sparky = new SparkClient({ token: process.env.ACCESS_TOKEN });
 
 
 bot.onCommand("about", function (command) {
@@ -61,7 +61,7 @@ function showHelp(roomId) {
 
 
 bot.onEvent("memberships", "created", function (trigger) {
-    var newMembership = trigger.data; // see specs here: https://developer.webex.com/endpoint-memberships-get.html
+    let newMembership = trigger.data; // see specs here: https://developer.webex.com/endpoint-memberships-get.html
     if (newMembership.personId == bot.interpreter.person.id) {
         debug("bot has just been added to space: " + trigger.data.roomId);
 
@@ -71,7 +71,7 @@ bot.onEvent("memberships", "created", function (trigger) {
             // Retreive actorEmail
             sparky.personGet(trigger.actorId)
                 .then(function (person) {
-                    var email = person.emails[0];
+                    let email = person.emails[0];
                     debug("found inquirer: " + email);
 
                     // Send a direct message

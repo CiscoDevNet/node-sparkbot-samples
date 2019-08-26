@@ -11,19 +11,19 @@
  *  
  */
 
-var debug = require("debug")("samples");
-var fine = require("debug")("samples:fine");
+const debug = require("debug")("samples");
+const fine = require("debug")("samples:fine");
 
 // Starts your Bot with default configuration. The Webex Teams API access token is read from the ACCESS_TOKEN env variable 
-var SparkBot = require("node-sparkbot");
-var bot = new SparkBot();
+const WebexChatBot = require("node-sparkbot");
+const bot = new WebexChatBot();
 
-// Change command prefix to #
-// As this bot uses a 'HUMAN' account, it is necessary to have him invoked only if the prefix is used
+// Changes command prefix to # :
+// because this bot uses a 'HUMAN' account, it is necessary to have him invoked only if the prefix is used
 bot.interpreter.prefix = "#";
 
-var SparkClient = require("node-sparky");
-var sparky = new SparkClient({ token: process.env.ACCESS_TOKEN });
+const SparkClient = require("node-sparky");
+const sparky = new SparkClient({ token: process.env.ACCESS_TOKEN });
 
 
 bot.onCommand("about", function (command) {
@@ -62,7 +62,7 @@ function showHelp(roomId) {
 bot.onCommand("stats", function (command) {
 
     // Max number of fetched messages, default is 100
-    var max = command.args[0];
+    let max = command.args[0];
     if (!max) {
         max = 100;
     }
@@ -74,8 +74,8 @@ bot.onCommand("stats", function (command) {
     });
 
     // Build a map of participations by participant email
-    var participants = {};
-    var totalMessages = 0; // used to get %ages of participation
+    let participants = {};
+    let totalMessages = 0; // used to get %ages of participation
     sparky.messagesGet({roomId: command.message.roomId}, max)
         .then(function (messages) {
             // Process messages 
@@ -95,7 +95,7 @@ bot.onCommand("stats", function (command) {
             });
 
             // Sort participants by participation DESC
-            var top = Object.keys(participants) //Create a list from the keys of your map. 
+            let top = Object.keys(participants) //Create a list from the keys of your map. 
                 .sort( //Sort it ...
                 function (a, b) { // using a custom sort function that...
                     // compares (the keys) by their respective values.
@@ -103,8 +103,8 @@ bot.onCommand("stats", function (command) {
                 });
 
             // Display top 10 participants 
-            var length = top.length;
-            var limit = Math.min(length, 10);
+            let length = top.length;
+            let limit = Math.min(length, 10);
             switch (limit) {
                 case 0:
                     sparky.messageSend({
@@ -142,7 +142,7 @@ bot.onCommand("stats", function (command) {
 
 
 bot.onEvent("memberships", "created", function (trigger) {
-    var newMembership = trigger.data; // see specs here: https://developer.webex.com/endpoint-memberships-get.html
+    let newMembership = trigger.data; // see specs here: https://developer.webex.com/endpoint-memberships-get.html
     if (newMembership.personId == bot.interpreter.person.id) {
         debug("bot's just added to room: " + trigger.data.roomId);
 
@@ -162,7 +162,7 @@ bot.onEvent("memberships", "created", function (trigger) {
 // This fake account has an email built from the owner email and suffixed with a number
 // email: <owner-email>-<suffix-digits>@<owner-domain>
 function isIncomingIntegration(message) {
-    var matched = message.personEmail.match(/-\d+@/);
+    let matched = message.personEmail.match(/-\d+@/);
     if (!matched) {
         return false;
     }

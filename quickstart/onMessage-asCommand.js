@@ -1,19 +1,18 @@
 //
-// Copyright (c) 2016 Cisco Systems
+// Copyright (c) 2016-2019 Cisco Systems
 // Licensed under the MIT License 
 //
 
-
 /* 
- * a Webex Teams webhook that leverages the node-sparkbot webhook.onMessage() function.
+ * a Webex Teams webhook that leverages a simple library (batteries included)
+ * 
  * note : this example requires that you've set an ACCESS_TOKEN env variable 
  *  
  */
 
-var SparkBot = require("node-sparkbot");
-
 // Starts your Webhook with default configuration where the Webex Teams API access token is read from the ACCESS_TOKEN env variable 
-var bot = new SparkBot();
+const SparkBot = require("node-sparkbot");
+const bot = new SparkBot();
 
 bot.onMessage(function (trigger, message) {
 
@@ -22,7 +21,7 @@ bot.onMessage(function (trigger, message) {
     //  
     console.log("new message from: " + trigger.data.personEmail + ", text: " + message.text);
 
-    var command = bot.asCommand(message);
+    let command = bot.asCommand(message);
     if (command) {
         console.log("detected command: " + command.keyword + ", with args: " + JSON.stringify(command.args));
     }

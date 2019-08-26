@@ -1,25 +1,25 @@
 //
-// Copyright (c) 2016 Cisco Systems
+// Copyright (c) 2016-2019 Cisco Systems
 // Licensed under the MIT License 
 //
 
-
 /* 
  * a Webex Teams webhook based on pure Express.js.
- * goal here is to illustrate how to create a bot without leveraging more advanced framework libraries.
+ * 
+ * goal here is to illustrate how to create a bot without any library
+ *
  */
 
-var express = require("express");
-var app = express();
+const express = require("express");
+const app = express();
 
-var bodyParser = require("body-parser");
+const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-var debug = require("debug")("samples");
+const debug = require("debug")("samples");
 
-
-var started = Date.now();
+const started = Date.now();
 app.route("/")
     // healthcheck
     .get(function (req, res) {
@@ -39,7 +39,7 @@ app.route("/")
         if (!req.body || !Utils.checkWebhookEvent(req.body)) {
             console.log("WARNING: Unexpected payload POSTed, aborting...");
             res.status(400).json({message: "Bad payload for Webhook",
-                                    details: "either the bot is misconfigured or Webex is running a new API version"});
+                                    details: "either the bot is misconfigured or Webex Teams is running a new API version"});
             return;
         }
 
@@ -55,9 +55,9 @@ app.route("/")
 //
 // [WORKAROUND] in some container situation (ie, Cisco Shipped), we need to use an OVERRIDE_PORT to force our bot to start and listen to the port defined in the Dockerfile (ie, EXPOSE), 
 // and not the PORT dynamically assigned by the host or scheduler.
-var port = process.env.OVERRIDE_PORT || process.env.PORT || 8080;
+const port = process.env.OVERRIDE_PORT || process.env.PORT || 8080;
 app.listen(port, function () { 
-    console.log("bot started at http://localhost:" + port + "/");
+    console.log("Webex Teams bot started at http://localhost:" + port + "/");
     console.log("   GET  / for health checks");
     console.log("   POST / to procress new Webhook events");
 });

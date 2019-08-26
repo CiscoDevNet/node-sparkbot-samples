@@ -1,20 +1,20 @@
 //
-// Copyright (c) 2016 Cisco Systems
+// Copyright (c) 2016-2019 Cisco Systems
 // Licensed under the MIT License 
 //
 
-
 /* 
- * a Webex Teams Bot that listens to specific Webhooks events, leverages node-sparkbot webhook.onEvent() function.
- * note : this example requires that you've set an ACCESS_TOKEN env variable to read messages contents.
+ * a Webex Teams webhook that leverages a simple library (batteries included)
+ * 
+ * note : this example requires that you've set an ACCESS_TOKEN env variable 
+ *  
  */
 
-var SparkBot = require("node-sparkbot");
-
 // Starts your Webhook with default configuration where the Webex Teams API access token is read from the ACCESS_TOKEN env variable 
-var bot = new SparkBot();
+const SparkBot = require("node-sparkbot");
+const bot = new SparkBot();
 
-bot.onEvent('messages', 'created', function(trigger) {
+bot.onEvent("messages", "created", function(trigger) {
   console.log("new message from: " + trigger.data.personEmail + ", in room: " + trigger.data.roomId);
   
   bot.decryptMessage(trigger, function (err, message) {

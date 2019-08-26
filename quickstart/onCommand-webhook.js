@@ -1,19 +1,19 @@
 //
-// Copyright (c) 2016 Cisco Systems
+// Copyright (c) 2016-2019 Cisco Systems
 // Licensed under the MIT License 
 //
 
 /* 
  * a Webex Teams webhook that leverages a simple library (batteries included)
  * 
- * note : this example requires that you've set an ACCESS_TOKEN env variable 
+ * note : this example requires that you've set a ACCESS_TOKEN env variable 
  *  
  */
 
-var SparkBot = require("node-sparkbot");
+const SparkBot = require("node-sparkbot");
 
-// Starts your Webhook with default configuration where the Webex Teams API access token is read from the ACCESS_TOKEN env variable 
-var bot = new SparkBot();
+// Starts your Webhook with default configuration where the Webex Teams API access token is read from the SPARK_TOKEN env variable 
+const bot = new SparkBot();
 
 // Registers the bot to the Webex platform to start receiving notifications
 // We list here various options to register your bot: pick one and update the code with your bot name and its public endpoint
@@ -29,7 +29,7 @@ var bot = new SparkBot();
 
 // Registration with no filter, but a secret and a callback
 // note that the secret needs to be known to the bot so that it can check the payload signatures
-var publicURL =  process.env.PUBLIC_URL || "https://f6d5d937.ngrok.io";
+const publicURL =  process.env.PUBLIC_URL || "https://f6d5d937.ngrok.io";
 bot.secret = process.env.WEBHOOK_SECRET || "not THAT secret";
 bot.createOrUpdateWebhook("register-bot", publicURL, "all", "all", null, bot.secret, function (err, webhook) {
   if (err) {

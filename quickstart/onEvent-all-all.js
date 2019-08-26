@@ -1,24 +1,23 @@
 //
-// Copyright (c) 2016 Cisco Systems
+// Copyright (c) 2016-2019 Cisco Systems
 // Licensed under the MIT License 
 //
 
-
 /* 
- * a Webex Teams Bot that listens to specific Webhooks events, leverages node-sparkbot webhook.onEvent() function.
+ * a bot that listens to all Webex Teams Webhook events
+ * 
  */
 
-var SparkBot = require("node-sparkbot");
-
-// Leverage a simple webhook framework
-var bot = new SparkBot();
+// Starts your Webhook with default configuration 
+const SparkBot = require("node-sparkbot");
+const bot = new SparkBot();
  
 bot.onEvent("all", "all", function(trigger) {
   
     //
     // YOUR CODE HERE
     //
-    console.log("EVENT: " + trigger.resource + "/" + trigger.event + ", with data id: " + trigger.data.id + ", triggered by person id:" + trigger.actorId);
-  
+    console.log("New event (" + trigger.resource + "/" + trigger.event + "), with data id: " + trigger.data.id + ", triggered by person id:" + trigger.actorId);
+    console.log("Learn more about Webhooks: at https://developer.webex.com/webhooks-explained.html");
 });
 
