@@ -28,7 +28,6 @@ bot.interpreter.prefix = "";
 const SparkClient = require("node-sparky");
 const sparky = new SparkClient({ token: process.env.ACCESS_TOKEN });
 
-
 bot.onCommand("about", function (command) {
     sparky.messageSend({
         roomId: command.message.roomId, 
@@ -74,23 +73,36 @@ bot.onEvent("memberships", "created", function (trigger) {
                     let email = person.emails[0];
                     debug("found inquirer: " + email);
 
-                    // Send a direct message
-                    sparky.messageSend({
-                        toPersonEmail: email, 
-                        markdown: "Found roomId: **" + newMembership.roomId + "**\n\nWill now leave the space you asked me to inquire on..."
-                    })
-                        .then(function (message) {
+                    sparky.roomGet(newMembership.roomId)
+                        .then(function (room) {
+                            const { id, title } = room;
+                            const unencoded = Buffer.from(id, "base64").toString();
+                            let msg = "Details for the room you just added me to:\n";
+                            msg += `\n* Name: **${title}**`;
+                            msg += `\n* Room id (encoded): **${id}**`;
+                            msg += `\n* Room id (not encoded): **${unencoded}** \n`;
+                            msg += "\nI will now leave that space.";
 
-                            // Leave inquired room
-                            sparky.membershipRemove(newMembership.id)
-                                .then(function () {
-                                    sparky.messageSend({
-                                        toPersonEmail: email, 
-                                        markdown: "Job done: I have silently left the space... Let me know when you need other identifiers ;-)"
-                                    });
-                                })
-                        });
-                })
+                            // Send a direct message
+                            sparky.messageSend({
+                                toPersonEmail: email,
+                                markdown: msg,
+                            })
+                                .then(function (message) {
+
+                                    // Leave inquired room
+                                    sparky.membershipRemove(newMembership.id)
+                                        .then(function () {
+                                            sparky.messageSend({
+                                                toPersonEmail: email,
+                                                markdown: "Job done: I have silently left the space... Let me know when you need other identifiers ;-)"
+                                            });
+                                        })
+                                });
+                            })
+                    });
+
+
         }
     }
 });
