@@ -5,7 +5,13 @@ DOCKER_ACCOUNT=objectisadvantag
 
 # Set this the your Host interface if you use DockerToolbox, otherwise leave it to 127.0.01
 DOCKER_HOST_IPADDRESS=192.168.99.100
+DOCKER_HOST_IPADDRESS=127.0.0.1
 
+# set the container name explicitly 
+CNAME=sparkbot
+
+# Customize makefile variables
+-include makefile.conf
 
 default: dev
 
@@ -23,7 +29,6 @@ ddev:
 	docker run -it -p 8080:8080 $(DOCKER_ACCOUNT)/node-sparkbot-samples
 
 drun: 
-	(lt -s sparkbot -l $(DOCKER_HOST_IPADDRESS) -p 8080 &)
-	docker run -it -p 8080:8080 $(DOCKER_ACCOUNT)/node-sparkbot-samples
-    
+	#(lt -s sparkbot -l $(DOCKER_HOST_IPADDRESS) -p 8080 &)
+	docker run -it -p 8080:8080 --rm --name $(CNAME) $(DOCKER_ACCOUNT)/node-sparkbot-samples
 

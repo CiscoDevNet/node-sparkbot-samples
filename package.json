@@ -2,6 +2,7 @@
   "name": "node-sparbot-samples",
   "version": "v2.1.0",
   "description": "Examples of Webex Teams bots in Node.js",
+  "readme": "README.md", 
   "keywords": [
     "SparkBot",
     "Webex Teams",
